@@ -13,6 +13,8 @@ libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.10.27"
 
 libraryDependencies += "commons-io" % "commons-io" % "2.4"
 
+libraryDependencies += "joda-time" % "joda-time" % "2.9.4"
+
 // Uncomment to use Akka
 //libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.11"
 
