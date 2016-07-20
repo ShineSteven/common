@@ -12,6 +12,8 @@ libraryDependencies += "commons-io" % "commons-io" % "2.4"
 
 libraryDependencies += "joda-time" % "joda-time" % "2.9.4"
 
+libraryDependencies += "com.typesafe" % "config" % "1.3.0"
+
 libraryDependencies ++= Seq(
   // Change this to another test framework if you prefer
   "org.scalatest" %% "scalatest" % "2.2.4" % "test",

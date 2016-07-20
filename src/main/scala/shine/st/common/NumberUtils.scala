@@ -9,7 +9,7 @@ import scala.util.Try
   */
 object NumberUtils {
   def stringToInt(s: String) = Try {
-    s.toInt
+    s.replace(",", "").replace("$", "").toInt
   }.toOption
 
   def unitsOfMoneyToInt(amount: String) = {
