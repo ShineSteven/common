@@ -6,10 +6,28 @@ import java.util.zip.{ZipEntry, ZipInputStream, ZipOutputStream}
 import shine.st.common.enums.OS
 import shine.st.commons.OSValidator
 
+import scala.io.Source
+import scala.util.control.Exception._
+
 /**
   * Created by stevenfanchiang on 2016/3/25.
   */
 object IOUtils {
+  def readFileToString(fileName :String) = {
+    val source = Source.fromFile(fileName)
+    nonFatalCatch[String] andFinally { source.close() } opt { source.mkString } getOrElse("unknow content")
+  }
+
+  def readFileToStringOfLimit(fileName :String, limit:Int) = {
+    val source = Source.fromFile(fileName)
+    nonFatalCatch[String] andFinally { source.close() } opt { source.getLines().take(limit).mkString } getOrElse("unknow content")
+  }
+
+  def inputStreamToString(is:InputStream) = {
+    val source = Source.fromInputStream(is)
+    nonFatalCatch[String] andFinally { source.close() } opt { source.mkString } getOrElse("unknow content")
+  }
+
   def inputStreamToFile(inputStream: java.io.InputStream, fileName: String) = {
     val file = new File(fileName)
     val fos = new java.io.FileOutputStream(file)

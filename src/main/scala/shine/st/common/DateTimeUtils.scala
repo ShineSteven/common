@@ -1,6 +1,6 @@
 package shine.st.common
 
-import java.util.Locale
+import java.util.{Date, Locale}
 
 import org.joda.time.DateTime
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
@@ -11,28 +11,66 @@ import scala.util.Try
   * Created by shinest on 2016/7/9.
   */
 object DateTimeUtils {
-  val dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
-  val dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd")
+  val DATE_HOUR_PATTERN = "yyyy-MM-dd HH:mm:ss"
+  val DATE_PATTERN = "yyyy-MM-dd"
   //  Tuesday, June 28, 2016
-  //  english locale
-  val enDateFormat = DateTimeFormat.forPattern("E, MMMM dd, yyyy").withLocale(Locale.ENGLISH)
+  val EN_DATE_PATTERN = "E, MMMM dd, yyyy"
 
-  def parse(text: String)(formatter: DateTimeFormatter): Option[DateTime] = {
+  val dateHourFormatter = DateTimeFormat.forPattern(DATE_HOUR_PATTERN)
+  val dateFormatter = DateTimeFormat.forPattern(DATE_PATTERN)
+  //  english locale
+  val enDateFormatter = DateTimeFormat.forPattern(EN_DATE_PATTERN).withLocale(Locale.ENGLISH)
+
+  private def getFormatter(pattern: String) = {
+    pattern match {
+      case DATE_HOUR_PATTERN => dateHourFormatter
+      case DATE_PATTERN => dateFormatter
+      case EN_DATE_PATTERN => enDateFormatter
+      case p => DateTimeFormat.forPattern(p)
+    }
+  }
+
+  def parse(text: String)(pattern: String) = {
     Try {
-      formatter.parseDateTime(text)
+      getFormatter(pattern).parseDateTime(text)
     }.toOption
   }
 
   def parseDate(text: String) = {
-    parse(text)(dateFormat)
+    parse(text)(DATE_PATTERN)
   }
 
-
-  def parseDateTime(text: String) = {
-    parse(text)(dateTimeFormat)
+  def parseDateHour(text: String) = {
+    parse(text)(DATE_HOUR_PATTERN)
   }
 
-  def parseEnDateTime(text: String) = {
-    parse(text)(enDateFormat)
+  def parseEnDate(text: String) = {
+    parse(text)(EN_DATE_PATTERN)
+  }
+
+  def formatDateHour(dateTime: Option[DateTime]): String = {
+    format(dateTime)(DATE_HOUR_PATTERN)
+  }
+
+  def formatDateHour(dateTime: DateTime): String = {
+    format(dateTime)(DATE_HOUR_PATTERN)
+  }
+
+  def format(dateTime: Option[DateTime])(pattern: String): String = {
+    dateTime.map { d =>
+      format(d)(pattern)
+    }.get
+  }
+
+  def format(dateTime: DateTime)(pattern: String): String = {
+    Try {
+      dateTime.toString(getFormatter(pattern))
+    }.getOrElse("")
+  }
+
+  def getDateTimeOptFromDate(date: Date) = {
+    Try {
+      new DateTime(date.getTime)
+    }.toOption
   }
 }
