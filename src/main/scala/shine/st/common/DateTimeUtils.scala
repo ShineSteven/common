@@ -59,7 +59,7 @@ object DateTimeUtils {
   def format(dateTime: Option[DateTime])(pattern: String): String = {
     dateTime.map { d =>
       format(d)(pattern)
-    }.get
+    }.getOrElse("")
   }
 
   def format(dateTime: DateTime)(pattern: String): String = {
