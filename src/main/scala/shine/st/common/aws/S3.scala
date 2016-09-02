@@ -1,9 +1,10 @@
 package shine.st.common.aws
 
 
-import java.io.File
+import java.io.{ByteArrayInputStream, File}
 
 import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
 
 
 /**
@@ -22,5 +23,15 @@ object S3 {
 
   def putObject(bucketName: String, file: File) = {
     s3Client.putObject(bucketName, file.getName, file)
+  }
+
+  def putObject(bucketName: String, fileName: String, content: String) = {
+    val bytes = content.getBytes("UTF-8")
+    val metaObject = new ObjectMetadata()
+    metaObject.setContentLength(content.getBytes.length)
+
+    //    String to inputstream
+    s3Client.putObject(bucketName, fileName, new ByteArrayInputStream(bytes), metaObject)
+
   }
 }
