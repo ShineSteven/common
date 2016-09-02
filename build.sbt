@@ -1,6 +1,6 @@
 name := """shinest_common"""
 
-version := "1.0.1.SNAPSHOT"
+version := "1.0.1.RELEASE"
 
 organization := "shine.st"
 

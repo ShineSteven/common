@@ -1,4 +1,4 @@
-package shine.st.commons
+package shine.st.common
 
 import shine.st.common.enums.OS
 
