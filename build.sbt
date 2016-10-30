@@ -1,4 +1,4 @@
-name := """shinest_common"""
+name := """common"""
 
 version := "1.0.2.SNAPSHOT"
 
