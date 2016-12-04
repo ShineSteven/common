@@ -1,18 +1,58 @@
 package shine.st.common
 
-import shine.st.common.enums.UnitOfMoney
-
 import scala.util.Try
 
 /**
   * Created by shinest on 2016/7/2.
   */
+
 object NumberUtils {
-  def stringToInt(s: String) = Try {
-    s.replace(",", "").replace("$", "").toInt
+  def strTo[T](s: String)(f: String => T) = Try {
+    f(s)
   }.toOption
 
-  def unitsOfMoneyToInt(amount: String) = {
-    amount.replace("$", "").split(" ").map { s => stringToInt(s).getOrElse(UnitOfMoney.transformToAmount(s)) }.foldLeft(1) { (a, b) => a * b }
+  def strTrans[R](t: String)(implicit f: Transfer.Aux[String, R]): Option[R] = {
+    Try {
+      f(t)
+    }.toOption
+  }
+
+  def trans[T, R](t: T)(implicit f: Transfer.Aux[T, R]): R = {
+    f(t)
   }
 }
+
+trait Transfer[S] {
+  type R
+
+  def apply(s: S): R
+}
+
+object Transfer {
+  type Aux[A0, B0] = Transfer[A0] {type R = B0}
+
+  implicit def strToInt: Aux[String, Int] = new Transfer[String] {
+    type R = Int
+
+    def apply(s: String) = s.toInt
+  }
+
+  implicit def strToLong: Aux[String, Long] = new Transfer[String] {
+    type R = Long
+
+    def apply(s: String) = s.toLong
+  }
+
+  implicit def strToFloat: Aux[String, Float] = new Transfer[String] {
+    type R = Float
+
+    def apply(s: String) = s.toFloat
+  }
+
+  implicit def strToDouble: Aux[String, Double] = new Transfer[String] {
+    type R = Double
+
+    def apply(s: String) = s.toDouble
+  }
+}
+

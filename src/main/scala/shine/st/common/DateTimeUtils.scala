@@ -2,8 +2,8 @@ package shine.st.common
 
 import java.util.{Date, Locale}
 
-import org.joda.time.DateTime
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
+import org.joda.time.{DateTime, DateTimeZone}
 
 import scala.util.Try
 
@@ -11,15 +11,19 @@ import scala.util.Try
   * Created by shinest on 2016/7/9.
   */
 object DateTimeUtils {
+  val TWZone = DateTimeZone.forID("Asia/Taipei")
+
   val DATE_HOUR_PATTERN = "yyyy-MM-dd HH:mm:ss"
   val DATE_PATTERN = "yyyy-MM-dd"
   //  Tuesday, June 28, 2016
   val EN_DATE_PATTERN = "E, MMMM dd, yyyy"
 
-  val dateHourFormatter = DateTimeFormat.forPattern(DATE_HOUR_PATTERN)
-  val dateFormatter = DateTimeFormat.forPattern(DATE_PATTERN)
+  implicit val dateHourFormatter = DateTimeFormat.forPattern(DATE_HOUR_PATTERN).withLocale(Locale.TAIWAN)
+  val dateFormatter = DateTimeFormat.forPattern(DATE_PATTERN).withLocale(Locale.TAIWAN)
   //  english locale
   val enDateFormatter = DateTimeFormat.forPattern(EN_DATE_PATTERN).withLocale(Locale.ENGLISH)
+  //  us locale with utc
+  val usUtcDateFormatter = DateTimeFormat.forPattern(EN_DATE_PATTERN).withLocale(Locale.US).withZoneUTC
 
   private def getFormatter(pattern: String) = {
     pattern match {
@@ -30,22 +34,30 @@ object DateTimeUtils {
     }
   }
 
-  def parse(text: String)(pattern: String) = {
+  def now = DateTime.now(TWZone)
+
+  def parse(text: String)(implicit dateTimeFormatter: DateTimeFormatter) = {
+    Try {
+      dateTimeFormatter.parseDateTime(text)
+    }.toOption
+  }
+
+  def parse(text: String, pattern: String) = {
     Try {
       getFormatter(pattern).parseDateTime(text)
     }.toOption
   }
 
   def parseDate(text: String) = {
-    parse(text)(DATE_PATTERN)
+    parse(text, DATE_PATTERN)
   }
 
   def parseDateHour(text: String) = {
-    parse(text)(DATE_HOUR_PATTERN)
+    parse(text, DATE_HOUR_PATTERN)
   }
 
   def parseEnDate(text: String) = {
-    parse(text)(EN_DATE_PATTERN)
+    parse(text, EN_DATE_PATTERN)
   }
 
   def formatDateHour(dateTime: Option[DateTime]): String = {
