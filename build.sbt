@@ -1,14 +1,14 @@
 name := """common"""
 
-version := "1.0.2"
+version := "1.0.3"
 
 organization := "shine.st"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.1"
 
 libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.11.60"
 
-libraryDependencies += "joda-time" % "joda-time" % "2.9.6"
+libraryDependencies += "joda-time" % "joda-time" % "2.9.7"
 
 libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 
