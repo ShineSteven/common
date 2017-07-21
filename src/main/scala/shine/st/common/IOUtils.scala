@@ -5,17 +5,31 @@ import java.util.zip.{ZipEntry, ZipInputStream, ZipOutputStream}
 
 import shine.st.common.enums.OS
 
-import scala.io.Source
+import scala.io.{BufferedSource, Source}
 import scala.util.control.Exception._
+import scala.util.control.NonFatal
 
 /**
   * Created by stevenfanchiang on 2016/3/25.
   */
-object IOUtils {
+
+trait IOUtils {
+  def close(resource: AutoCloseable): Unit = {
+    try {
+      if (resource != null)
+        resource.close()
+    }
+    catch {
+      case NonFatal(_) =>
+    }
+  }
+}
+
+object IOUtils extends IOUtils{
   def readFileToString(fileName: String) = {
-    val source = Source.fromFile(fileName)
+    val source: BufferedSource = Source.fromFile(fileName)
     nonFatalCatch[String] andFinally {
-      source.close()
+      close(source)
     } opt {
       source.mkString
     } getOrElse ("unknow content")

@@ -68,6 +68,10 @@ object DateTimeUtils {
     format(dateTime)(DATE_HOUR_PATTERN)
   }
 
+  def formatDate(dateTime: DateTime): String = {
+    format(dateTime)(DATE_PATTERN)
+  }
+
   def format(dateTime: Option[DateTime])(pattern: String): String = {
     dateTime.map { d =>
       format(d)(pattern)

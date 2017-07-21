@@ -4,7 +4,7 @@ version := "2.0.0"
 
 organization := "shine.st"
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.2"
 
 libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.11.60"
 

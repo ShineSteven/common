@@ -1,6 +1,6 @@
-# shinest_common
-我的共用程式，暫時只打包到local `.m2`資料夾中。
+# shinest.common
+我的共用程式，目前只打包到 local 環境的 `.m2`資料夾中。
 
 ```
-activator clean publish
+sbt clean publish
 ```
