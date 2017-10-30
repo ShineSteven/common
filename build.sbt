@@ -4,11 +4,11 @@ version := "2.0.0"
 
 organization := "shine.st"
 
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.3"
 
 libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.11.60"
 
-libraryDependencies += "joda-time" % "joda-time" % "2.9.7"
+libraryDependencies += "joda-time" % "joda-time" % "2.9.9"
 
 libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 
